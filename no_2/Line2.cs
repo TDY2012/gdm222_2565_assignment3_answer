@@ -1,5 +1,7 @@
 public class Line2
 {
+    public static double EPSILON = 1e-10;
+
     //  Line slope.
     protected double m;
     public double M

@@ -55,7 +55,13 @@ class Program
                 maxSlope = segmentList[i].M;
             }
         }
-        Line2 t = new Line2((maxSlope + nextMaxSlope)/2, k);
+
+        if(double.IsInfinity(maxSlope))
+        {
+            maxSlope = nextMaxSlope + Math.Sign(maxSlope);
+        }
+
+        Ray2 t = new Ray2(k, k + new Vector2(1, (maxSlope + nextMaxSlope)/2));
 
         int intersectionCount = 0;
         for(int i=0; i<segmentList.Count; i++)

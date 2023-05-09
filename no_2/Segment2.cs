@@ -1,17 +1,5 @@
-public class Segment2: Line2
+public class Segment2: Ray2
 {
-    //  The endpoints of the segment.
-    protected Vector2 u;
-    public Vector2 U
-    {
-        get { return this.u; }
-    }
-    protected Vector2 v;
-    public Vector2 V
-    {
-        get { return this.v; }
-    }
-
     public Segment2(Vector2 u, Vector2 v): base(u, v)
     {
         this.u = u;
@@ -21,8 +9,20 @@ public class Segment2: Line2
     //  Check if given line and segment is intersected.
     public static bool IsIntersected(Segment2 s, Line2 t)
     {
-        Vector2 intersection = Line2.Intersection(s, t);
+        Vector2 intersection = Line2.Intersection(t, s);
         return IsOn(s, intersection);
+    }
+
+    //  Check if given ray and segment is intersected.
+    public static bool IsIntersected(Segment2 s, Ray2 t)
+    {
+        Vector2 intersection = Ray2.Intersection(t, s);
+        Console.WriteLine("intersection = {0}", intersection);
+        bool isOnRay = Ray2.IsOn(t, intersection);
+        bool isOnSegment = IsOn(s, intersection);
+        Console.WriteLine("isOnRay = {0}", isOnRay);
+        Console.WriteLine("isOnSegment = {0}", isOnSegment);
+        return Ray2.IsOn(t, intersection) && IsOn(s, intersection);
     }
 
     //  Check if given point lies on the segment.
@@ -37,11 +37,11 @@ public class Segment2: Line2
         {
             if(double.IsInfinity(s.m))
             {
-                return s.X0 == p.X;
+                return Math.Abs(s.X0 - p.X) < Segment2.EPSILON;
             }
             else
             {
-                return (s.M*p.X) + s.Y0 == p.Y;
+                return Math.Abs((s.M*p.X) + s.Y0 - p.Y) < Segment2.EPSILON;
             }
         }
         else
